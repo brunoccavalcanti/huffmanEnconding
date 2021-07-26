@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class Huffman {
 
@@ -19,14 +20,10 @@ public class Huffman {
         logger.info("texto splitado {}", letters);
 
         logger.info("Contando a frequência das letras");
-        Map<Character, Node> count = new HashMap<>();
-        for (char ch : letters) {
-            if (!count.containsKey(ch)) {
-                count.put(ch, new Node(ch));
-            }
-            count.get(ch).add();
-        }
-        for (Character key : count.keySet()) System.out.println(key + " " + count.get(key).getFrequency());
+        PriorityQueue<Node> frequency = countFrequencies(letters);
+        frequency.forEach(e -> {
+            System.out.println(e.getSymbol() + " " + e.getFrequency());
+        });
 
         return null;
     }
@@ -36,6 +33,17 @@ public class Huffman {
         char[] letters = new char[text.length()];
         text.getChars(0, text.length(), letters, 0);
         return letters;
+    }
+
+    private PriorityQueue<Node> countFrequencies(char[] letters) {
+        Map<Character, Node> count = new HashMap<>();
+        for (char ch : letters) {
+            if (!count.containsKey(ch)) {
+                count.put(ch, new Node(ch));
+            }
+            count.get(ch).add();
+        }
+        return new PriorityQueue<>(count.values());
     }
 
 }

@@ -23,7 +23,7 @@ public class Node implements Comparable<Node>{
         return count;
     }
 
-        public void add() {
+    public void add() {
         count++;
     }
 
