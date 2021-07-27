@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 public class Huffman {
 
@@ -23,11 +24,20 @@ public class Huffman {
 
         root = createTree(countFrequencies(letters));
 
+        Map<Character, String> codemap = createCodeMap();
 
+        logger.info("Codemap -> {}", codemap);
 
-        return null;
+        StringBuilder data = new StringBuilder();
+        for(char ch : letters) {
+            data.append(codemap.get(ch));
+        }
+
+        logger.info("Retornando bin...");
+        return data.toString();
     }
 
+    // Método usado para criar a árvore, ele retira os dois menores nós da lista, os agrupa e os adiciona de volta, assim que a lista estiver vazia, significa que este nó é a raiz da árvore
     private Node createTree(PriorityQueue<Node> nodes) {
         logger.info("Criando árvore binária");
         while(true) {
@@ -40,7 +50,7 @@ public class Huffman {
 
             // 3. Se a query estivar vazia, este nó é a raíz
             if(nodes.isEmpty()){
-                logger.info("A query está vazia, este nó é a raiz");
+                logger.info("A query está vazia, este nó [{}] é a raiz", parent.getSymbol());
                 return parent;
             }
 
@@ -69,4 +79,9 @@ public class Huffman {
         return new PriorityQueue<>(count.values());
     }
 
+    private Map<Character, String> createCodeMap() {
+        Map<Character, String> result = new TreeMap<>();
+        root.fillCodeMap(result, "");
+        return result;
+    }
 }

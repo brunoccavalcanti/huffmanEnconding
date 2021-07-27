@@ -1,5 +1,7 @@
 package br.edu.huffman.node;
 
+import java.util.Map;
+
 //Classe usada para representar um nó na árvore
 public class Node implements Comparable<Node>{
 
@@ -27,6 +29,10 @@ public class Node implements Comparable<Node>{
         count++;
     }
 
+    public boolean isLeaf() {
+        return left == null && right == null;
+    }
+
     public char getSymbol() {
         return symbol;
     }
@@ -43,4 +49,15 @@ public class Node implements Comparable<Node>{
     public int compareTo(Node o) {
         return getFrequency() - o.getFrequency();
     }
+
+    public void fillCodeMap(Map<Character, String> codemap, String work) {
+        if (isLeaf()) {
+            codemap.put(getSymbol(), work);
+            return;
+        }
+
+        left.fillCodeMap(codemap, work + "0");
+        right.fillCodeMap(codemap, work + "1");
+    }
+
 }
